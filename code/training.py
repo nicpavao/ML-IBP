@@ -1,17 +1,18 @@
 from building import *
 import time
 from tqdm import tqdm
+import torch.optim as optim
 
 PAD_TOKEN_ID = 0
 
-def train(model, device, criterion, optimizer, dataloader, epochs, name: str):
+def train(model, device, criterion, lr, dataloader, epochs, name: str):
     print("Starting training...")
     start_time = time.time()
 
     for epoch in range(epochs):
         model.train()  # Set model to training mode
         total_loss = 0
-
+        optimizer = optim.Adam(model.parameters(), lr/(2**epoch))
         with tqdm(total=len(dataloader), desc=f"Epoch {epoch+1}/{epochs}") as pbar:
             for b, (src_batch, tgt_input_batch) in enumerate(dataloader):  
                 # Move tensors to the correct device

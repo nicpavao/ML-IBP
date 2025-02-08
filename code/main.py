@@ -1,7 +1,6 @@
 from building import *
 from testing import *
 from training import *
-import torch.optim as optim
 
 tokenizer = CustomTokenizer()
 
@@ -9,8 +8,8 @@ tokenizer = CustomTokenizer()
 # Hyperparamters
 # --------------
 vocab_size = len(tokenizer.vocab)
-d_model = 256
-d_ffn = 256
+d_model = 512
+d_ffn = 512
 nhead = 8
 encoder_layers = 4
 decoder_layers = 4
@@ -36,7 +35,6 @@ if __name__ == "__main__":
     # Trainng Objects & Device
     # ---------------------
     epochs = 5
-    optimizer = optim.Adam(model.parameters(), lr=1e-4)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     criterion = nn.CrossEntropyLoss(ignore_index=PAD_TOKEN_ID)
     model.to(device)  
@@ -45,4 +43,4 @@ if __name__ == "__main__":
     # Training Routine
     # ---------------------
     
-    train(model, device, criterion, optimizer, dataloader, epochs, "TC_KernelModel_D256_H8_L4")
+    train(model, device, criterion, 0.0001, dataloader, epochs, "TC_KernelModel_D512_H8_L4")
